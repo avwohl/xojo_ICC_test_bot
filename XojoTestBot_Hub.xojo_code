@@ -86,14 +86,14 @@ Inherits ICC_Hub
 
 	#tag Method, Flags = &h0
 		Sub recieve_L1(a_dg As ICC_Datagram)
-		  dim dg_name_text as text = App.xcn_map.get_datagram_name(a_dg.nums(0))
+		  Dim dg_name_text As Text = xcn_map.get_datagram_name(a_dg.nums(0))
 		  print_dg("L1",dg_name_text,a_dg)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub recieve_L2(dgram_num as integer, a_dg as ICC_Datagram)
-		  print_dg("L2",app.dg_map.get_datagram_name(dgram_num),a_dg)
+		  print_dg("L2",dg_map.get_datagram_name(dgram_num),a_dg)
 		  if dgram_num = ICC_DG.DG_WHO_AM_I then
 		    recieve_L2_who_am_i(a_dg.tokens(1),a_dg.tokens(2))
 		    return

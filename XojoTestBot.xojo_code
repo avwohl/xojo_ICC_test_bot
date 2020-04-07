@@ -1,26 +1,8 @@
 #tag Class
 Protected Class XojoTestBot
 Inherits Application
-	#tag Event
-		Sub Open()
-		  dg_map=new ICC_DG_debug
-		  xcn_map=new ICC_XCN_debug
-		  
-		  
-		End Sub
-	#tag EndEvent
-
-
-	#tag Property, Flags = &h0
-		Shared dg_map As ICC_DG_debug
-	#tag EndProperty
-
 	#tag Property, Flags = &h0
 		settings As AVW_settings
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		Shared xcn_map As ICC_XCN_debug
 	#tag EndProperty
 
 
