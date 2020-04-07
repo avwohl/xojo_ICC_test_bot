@@ -328,7 +328,7 @@ End
 		  Dim sendme As String
 		  sendme=ConsoleIn.Value
 		  ConsoleIn.Value=""
-		  sendme=sendme+Chr(ICC_util.SEND_TO_SERVER_EOL)
+		  sendme=sendme+Chr(AVW_util.SEND_TO_SERVER_EOL)
 		  if hub.iccnet = nil then
 		    hub.debug_print_string("attempt to send to an uninitilized network")
 		    return

@@ -16,6 +16,10 @@ Inherits Application
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		settings As AVW_settings
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		Shared xcn_map As ICC_XCN_debug
 	#tag EndProperty
 

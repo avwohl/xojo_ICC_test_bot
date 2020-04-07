@@ -73,10 +73,10 @@ Inherits ICC_Hub
 	#tag Method, Flags = &h0
 		Sub print_dg(description as string, dg_name as text, a_dg as ICC_Datagram)
 		  dim result as text
-		  result=ICC_Util.to_text(description)+ICC_util.to_text(" ")+dg_name
+		  result=AVW_util.to_text(description)+AVW_util.to_text(" ")+dg_name
 		  if a_dg.ntokens> 0 then
 		    for i as integer=0 to a_dg.ntokens
-		      result=result+ICC_util.to_text(" '")+a_dg.tokens(i)+ICC_util.to_text("'")
+		      result=result+AVW_util.to_text(" '")+a_dg.tokens(i)+AVW_util.to_text("'")
 		    next i
 		  end if
 		  debug_print(result)
@@ -104,8 +104,8 @@ Inherits ICC_Hub
 
 	#tag Method, Flags = &h0
 		Sub recieve_L2_who_am_i(handle as text, titles as text)
-		  dim atxt as text = ICC_util.to_text("recieved L2 who_am_i handle=")+handle
-		  atxt=atxt+ICC_util.to_text(" titles=")+titles
+		  dim atxt as text = AVW_util.to_text("recieved L2 who_am_i handle=")+handle
+		  atxt=atxt+AVW_util.to_text(" titles=")+titles
 		  debug_print(atxt)
 		  win.user_name.Value=handle
 		  
@@ -157,7 +157,7 @@ Inherits ICC_Hub
 		Sub shutdown()
 		  // Calling the overridden superclass method.
 		  Super.shutdown()
-		  win.user_name.Value=ICC_util.to_text("Logged out")
+		  win.user_name.Value=AVW_util.to_text("Logged out")
 		  
 		End Sub
 	#tag EndMethod
@@ -182,6 +182,14 @@ Inherits ICC_Hub
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="update_next_keep_alive_ticks_time"
+			Visible=false
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="login_L2_settings"
 			Visible=false
