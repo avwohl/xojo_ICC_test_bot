@@ -4,6 +4,7 @@ Inherits ICC_Hub
 	#tag Method, Flags = &h0
 		Sub Constructor(awin as XojoTestBotWindow)
 		  win=awin
+		  Super.Constructor
 		  startup()
 		  
 		End Sub
