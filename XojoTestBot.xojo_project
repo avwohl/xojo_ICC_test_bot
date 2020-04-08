@@ -6,6 +6,7 @@ Class=XojoTestBot;XojoTestBot.xojo_code;&h000000006C2897FF;&h0000000000000000;fa
 Window=XojoTestBotWindow;XojoTestBotWindow.xojo_window;&h00000000081ED7FF;&h0000000000000000;false
 MenuBar=XojoTestBotMenuBar;XojoTestBotMenuBar.xojo_menu;&h0000000033BC8FFF;&h0000000000000000;false
 Class=XojoTestBot_Hub;XojoTestBot_Hub.xojo_code;&h000000007FA9DFFF;&h0000000000000000;false
+Class=ICC_Net_error_keep_alive;xojo_ICC_connection/ICC_Net_error_keep_alive.xojo_code;&h000000002F17CFFF;&h0000000000000000;false
 Class=ICC_Net;xojo_ICC_connection/ICC_Net.xojo_code;&h0000000027B107FF;&h0000000000000000;false
 Class=ICC_Datagram;xojo_ICC_connection/ICC_Datagram.xojo_code;&h000000003F8F47FF;&h0000000000000000;false
 Class=ICC_Parse_12;xojo_ICC_connection/ICC_Parse_12.xojo_code;&h000000004C15C7FF;&h0000000000000000;false
