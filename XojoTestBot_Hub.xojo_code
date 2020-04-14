@@ -1,6 +1,6 @@
 #tag Class
 Protected Class XojoTestBot_Hub
-Inherits ICC_Hub
+Inherits ICC_connection.ICC_Hub
 	#tag Method, Flags = &h0
 		Sub Constructor(awin as XojoTestBotWindow)
 		  win=awin
@@ -72,7 +72,7 @@ Inherits ICC_Hub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub print_dg(description as string, dg_name as text, a_dg as ICC_Datagram)
+		Sub print_dg(description as string, dg_name as text, a_dg as ICC_connection.ICC_datagram)
 		  dim result as text
 		  result=AVW_util.to_text(description)+AVW_util.to_text(" ")+dg_name
 		  if a_dg.ntokens> 0 then
@@ -86,32 +86,23 @@ Inherits ICC_Hub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub recieve_L1(a_dg As ICC_Datagram)
+		Sub recieve_L1(a_dg As ICC_connection.ICC_datagram)
 		  Dim dg_name_text As Text = xcn_map.get_datagram_name(a_dg.nums(0))
 		  print_dg("L1",dg_name_text,a_dg)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub recieve_L2(dgram_num as integer, a_dg as ICC_Datagram)
-		  print_dg("L2",dg_map.get_datagram_name(dgram_num),a_dg)
-		  if dgram_num = ICC_DG.DG_WHO_AM_I then
-		    recieve_L2_who_am_i(a_dg.tokens(1),a_dg.tokens(2))
-		    return
-		  end if
+		Function recieve_L2(a_dg as ICC_connection.ICC_datagram) As boolean
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub recieve_L2_who_am_i(handle as text, titles as text)
-		  dim atxt as text = AVW_util.to_text("recieved L2 who_am_i handle=")+handle
-		  atxt=atxt+AVW_util.to_text(" titles=")+titles
-		  debug_print(atxt)
-		  win.user_name.Value=handle
+		  If Super.recieve_l2(a_dg) Then
+		    Return True
+		  End If
+		  rem if this program enables dgs the library doesn't handle yet parse them here
+		  rem still unhandled
+		  Return False
 		  
-		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -123,12 +114,6 @@ Inherits ICC_Hub
 		  debug_print("received text outside a DG ["+atxt+"]")
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub send_line(astr as string)
-		  iccnet.Write(astr+chr(10))
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -158,7 +143,7 @@ Inherits ICC_Hub
 		Sub shutdown()
 		  // Calling the overridden superclass method.
 		  Super.shutdown()
-		  win.user_name.Value=AVW_util.to_text("Logged out")
+		  win.user_name.Value=AVW_util.to_text("")
 		  
 		End Sub
 	#tag EndMethod
@@ -168,10 +153,10 @@ Inherits ICC_Hub
 		  // Calling the overridden superclass method.
 		  Super.startup()
 		  
-		  setup_L2(ICC_DG.DG_WHO_AM_I)
-		  setup_L2(ICC_DG.DG_CHANNEL_TELL)
-		  setup_L2(ICC_DG.DG_PERSONAL_TELL)
-		  setup_L2(ICC_DG.DG_SHOUT)
+		  setup_L2 (ICC_connection.ICC_DG.DG_WHO_AM_I)
+		  setup_L2 (ICC_connection.ICC_DG.DG_CHANNEL_TELL)
+		  setup_L2 (ICC_connection.ICC_DG.DG_PERSONAL_TELL)
+		  setup_L2 (ICC_connection.ICC_DG.DG_SHOUT)
 		  
 		End Sub
 	#tag EndMethod
@@ -183,30 +168,6 @@ Inherits ICC_Hub
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="update_next_keep_alive_ticks_time"
-			Visible=false
-			Group="Behavior"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="login_L2_settings"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="logged_in"
-			Visible=false
-			Group="Behavior"
-			InitialValue="false"
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true

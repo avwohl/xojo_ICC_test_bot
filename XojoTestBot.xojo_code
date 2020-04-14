@@ -2,7 +2,7 @@
 Protected Class XojoTestBot
 Inherits Application
 	#tag Property, Flags = &h0
-		settings As AVW_settings
+		settings As AVW_settings_module.AVW_settings
 	#tag EndProperty
 
 
