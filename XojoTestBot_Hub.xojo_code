@@ -1,11 +1,34 @@
 #tag Class
 Protected Class XojoTestBot_Hub
 Inherits ICC_connection.ICC_Hub
+Implements AVW_util.outputer
 	#tag Method, Flags = &h0
 		Sub Constructor(awin as XojoTestBotWindow)
 		  win=awin
+		  settings=New AVW_settings_module.AVW_settings
+		  // add all the known settings here
+		  // if a setting in this list is missing it will throw an error in the check
+		  settings.define("event_sleep_ms")
+		  settings.define("ask_icc_every_seconds")
+		  settings.define("chess_startup")
+		  settings.define("debug_data_from_uci")
+		  settings.define("debug_data_to_icc")
+		  settings.define("debug_data_to_uci")
+		  settings.define("debug_print")
+		  settings.define("die_if_no_icc_response_seconds")
+		  settings.define("tcp_input_size")
+		  settings.define("tcp_output_size")
+		  settings.define("icc_hostname")
+		  settings.define("icc_port")
+		  settings.define("password")
+		  settings.define("user")
+		  
+		  settings.read_file(Self,"test_cfg/test_bot.cfg")
+		  // report missing settings now at startup
+		  // rather than much later while running
+		  settings.check
 		  Super.Constructor
-		  startup()
+		  startup
 		  
 		End Sub
 	#tag EndMethod
@@ -66,6 +89,15 @@ Inherits ICC_connection.ICC_Hub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub outs(outme as string)
+		  // Part of the AVW_util.outputer interface.
+		  
+		  debug_print(outme.totext)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub parse_failed(atext as text)
 		  debug_print("parse failed error="+atext)
 		End Sub
@@ -120,20 +152,23 @@ Inherits ICC_connection.ICC_Hub
 		Sub send_login()
 		  send_line("level1=1")
 		  send_line("level2settings="+login_L2_settings)
-		  send_line("g")
-		  rem send_line("my-handle")
-		  rem send_line("my-password")
-		  rem may need to be TD to set buffers
-		  rem send_line("set tcp_input_size 60000")
-		  rem send_line("set tcp_output_size 60000")
-		  send_line("set prompt 0")
-		  send_line("set gin 0")
-		  send_line("set pin 0")
-		  send_line("set open 0")
-		  send_line("set wrap 0")
-		  rem guest can't set a note
-		  rem send_line("set 10 Xojo test bot")
-		  send_line("set style 13")
+		  send_line(settings.get_string("user"))
+		  Var password As String=settings.get_string("password")
+		  // guest login doesn't need a password, no password represented as a zero len string
+		  If password.length>0 Then
+		    send_line(password)
+		  End If
+		  Var tcp_input_size As String=settings.get_string("tcp_input_size")
+		  Var tcp_output_size As String=settings.get_string("tcp_output_size")
+		  // may need to be TD to set these
+		  If tcp_input_size.length>0 Then
+		    send_line("set tcp_input_size "+tcp_input_size)
+		  End If
+		  If tcp_output_size.length>0 Then
+		    send_line("set tcp_output_size "+tcp_output_size)
+		  End If
+		  
+		  send_line(settings.get_string("chess_startup"))
 		  
 		  
 		End Sub
@@ -168,6 +203,30 @@ Inherits ICC_connection.ICC_Hub
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="logged_in"
+			Visible=false
+			Group="Behavior"
+			InitialValue="false"
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="login_L2_settings"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="update_next_keep_alive_ticks_time"
+			Visible=false
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true

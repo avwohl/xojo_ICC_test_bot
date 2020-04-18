@@ -262,8 +262,12 @@ End
 
 	#tag Event
 		Sub Open()
-		  hub=new XojoTestBot_Hub(SELF)
 		  
+		  Try 
+		    protected_open
+		  Catch e As RuntimeException
+		    MessageBox(e.Message)
+		  End 
 		  
 		End Sub
 	#tag EndEvent
@@ -292,8 +296,18 @@ End
 	#tag Method, Flags = &h0
 		Sub make_connection()
 		  hub=new XojoTestBot_Hub(SELF)
-		  hub.iccnet.start_connection(5000,"chessclub.com")
+		  hub.iccnet.start_connection(hub.settings.get_integer("icc_port"),hub.settings.get_string("icc_hostname"))
 		  debug_print("started net connection")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub protected_open()
+		  Var f As FolderItem
+		  f = new FolderItem("")
+		  debug_print(f.NativePath.ToText)
+		  hub=New XojoTestBot_Hub(Self)
 		  
 		End Sub
 	#tag EndMethod
